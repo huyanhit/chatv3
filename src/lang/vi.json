@@ -1,0 +1,10 @@
+{
+    "title": "Xin chào! Laka ver 2",
+    "validate": {
+        "required": "Trường này không được trống.",
+        "max": "Nhập tối đa {msg} ký tự.",
+        "min": "Nhập tổi thiểu {msg} ký tự.",
+        "email": "Định dạng Email không đúng."
+    },
+    "title": "Xin chào! Laka ver 2"
+}
