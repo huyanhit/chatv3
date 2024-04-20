@@ -6,6 +6,9 @@ const props = {... uiProps, ... {
     placeholder: {
         type: String,
     },
+    name: {
+        type: String,
+    },
     label: {
         type: String,
     },

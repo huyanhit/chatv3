@@ -7,15 +7,15 @@
             {{ $props.label }}
         </l-label>
         <input
-            :id="$props.id"
             ref="refInput"
             class="form-control l-textfield"
+            :id="$props.id"
             :disabled="disabled"
             :class="$props.class"
             :type="type"
             :value="modelValue"
             :placeholder="placeholder"
-            v-on="events" 
+            v-on="events"
             @input="$emit('update:modelValue', $event.target.value)"
         >
         <span

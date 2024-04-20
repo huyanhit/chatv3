@@ -19,7 +19,7 @@ import { createVuetify }  from 'vuetify'
 import { mdi }            from 'vuetify/iconsets/mdi'
 import * as components  from 'vuetify/components'
 import * as directives  from 'vuetify/directives'
-// import uiCustomer       from './plugins/ui-customers';
+import uiCustomer       from './plugins/ui-customers';
 
 import '@mdi/font/css/materialdesignicons.css' 
 import 'vuetify/styles'
@@ -62,9 +62,9 @@ app.config.devtools = import.meta.env.VITE_APP_DEBUG_TOOL
 app.config.debug    = import.meta.env.VITE_APP_DEBUG_TOOL
 app.config.silent   = import.meta.env.VITE_APP_DEBUG_TOOL
 
-app.use(new VueSocketIO({debug: import.meta.env.VITE_APP_DEBUG_SOCKET, connection: import.meta.env.VITE_APP_API_SOCKET}))
+// app.use(new VueSocketIO({debug: import.meta.env.VITE_APP_DEBUG_SOCKET, connection: import.meta.env.VITE_APP_API_SOCKET}))
 app.use(i18n);
-// app.use(uiCustomer);
+app.use(uiCustomer);
 app.use(vuetify);
 app.use(router);
 app.use(store);

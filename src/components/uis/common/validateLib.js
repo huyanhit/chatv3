@@ -30,29 +30,23 @@ const functions = {
     min: function (v, dataRule) {
         return v.length >= dataRule || t('validate.min', { msg: dataRule });
     },
-    required: function (v) {
-        return !!v || t('validate.required');
-    },
-    validateCustom: function (v, dataRule) {
-        for (const func of dataRule) {
-            if (typeof func === 'function') {
-                func();
-            }
-        }
-    }
+    required: (v) => !!v || t('validate.required'),
 }
 
-export default function(value, rules){
+export default function(items){
     let errors = '';
-    for(let index in rules){
-        if(typeof(rules[index]) === 'function'){
-            return rules[index]();
+    const value = items.props.modelValue;
+    const rules = items.props.rules;
+    for (let index in rules){
+        let error = null;
+        const rule = rules[index].split(':');
+        if(typeof(rule) === 'function'){
+            error = rule();
         }else{
-            let error = functions[index](value, rules[index])
-            if(error && error !== true){
-                errors += error + ' ';
-                break;
-            }
+            error = functions[rule[0]](value, rule[1]);
+        }
+        if(error && error !== true) {
+            errors += error + ' ';
         }
     }
 

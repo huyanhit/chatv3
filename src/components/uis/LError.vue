@@ -21,7 +21,6 @@ export default{
     setup(props, { emit }) {
         const events = { }
         transfer.setupEvents(events, emit);
-
         return {events}
     }
 }

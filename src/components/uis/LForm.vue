@@ -6,9 +6,8 @@
         <form
             :id="id"
             :class="$props.class"
-            :disabled="$props.disabled"
             :style="'background:'+ background +';'"
-            @input="onInput($event)"
+            @input="onInput"
         >
             <slot />
         </form>
@@ -30,16 +29,18 @@ export default {
         const items  = ref([]);
         const events = {}
 
-        const validate = function() {
-            let has = false;
+        const validate = function(only = false) {
+            let errors = [];
             for(let item of items.value){
-                let error = validateLib(item.props.modelValue, item.props.rules);
-                if(error){
-                    has = true;
+                let error = validateLib(item);
+                if(error && error !== true){
+                    errors.push({ name: item.props.name, error: error })
                     item.proxy.errors = error;
+                    if(only) break
                 }
             }
-            return has;
+
+            return (errors.length > 0)? {errors: errors}: false;
         }
         const reset = function() {
             for(let item of items.value){
@@ -49,14 +50,14 @@ export default {
         const onInput = function(e){
             if(props.validate_on === 'auto'){
                 for(let item of items.value){
-                    if(e.target.__vueParentComponent.uid === item.uid){
-                        item.proxy.errors = validateLib(item.props.modelValue, item.props.rules);
+                    if(e.target === item.refs.refInput){
+                        item.proxy.errors = validateLib(item);
                     }
                 }
             }
         }
         
-        transfer.setupProvide('form',items);
+        transfer.setupProvide('form', items);
         transfer.setupEvents(events, emit);
         
         return {validate, reset, events, onInput}

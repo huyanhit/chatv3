@@ -1,42 +1,29 @@
 
 
 <template>
-    <v-snackbar v-model="data.showAlert" variant="outlined" width="520" location="top" multi-line>{{ data.apiMessage }}
-        <template v-slot:actions>
-            <v-btn variant="text" @click="data.showAlert = false"> Close </v-btn>
-        </template>
-    </v-snackbar>
-    <v-sheet 
-        :class="model"
-        class="mt-8"
-        elevation="4"
-        id="login-form"
-        rounded 
-        border >
-        <v-form ref='form' v-model="data.form" @submit.prevent="onSubmit">
+    <div  class="mt-8" id="login-form">
+        <l-form ref='form' v-model="data.form" @submit.prevent="loginApp" validate_on="auto">
             <h3 class="text-center mb-5"> <b>LOGIN</b> </h3>
-            <v-text-field variant="outlined" 
-                type="email" 
-                label="Email address" 
-                class="form-control" 
-                v-model="data.login.email" 
-                required
-                :rules="[Validate.required, Validate.max(data.login.email, 50), Validate.email]" 
+            <l-text-field variant="outlined"
+                type="email"
+                label="Email address"
+                name="email"
+                class="form-control"
+                v-model="data.login.email"
+                :rules="['required','email']"
             />
-            <v-text-field 
-                variant="outlined" 
-                type="password" 
-                class="form-control" 
-                label="Password" 
-                required
-                v-model="data.login.password"  
-                @click:appendInner.stop="data.showPass = !data.showPass"
-                :append-inner-icon="data.showPass? 'mdi-eye-off-outline': 'mdi-eye-outline'"
-                :rules="[Validate.required]" 
+            <l-text-field
+                variant="outlined"
+                type="password"
+                name="password"
+                class="form-control"
+                label="Password"
+                v-model="data.login.password"
+                :rules="['required']"
             />
-            <v-checkbox label="Remember me" v-model="data.login.remember"/>
+            <l-checkbox label="Remember me" v-model="data.login.remember"/>
             <div class="col text-center">
-                <v-btn variant="outlined" type="button" class="mb-4" v-on:click="loginApp">Sign in</v-btn>
+                <l-button type="submit" variant="outlined" class="btn btn-primary text-white">Sign in</l-button>
             </div>
             <div class="col text-center mb-3">
                 <router-link to="/fogot-password">Forgot password?</router-link>
@@ -44,14 +31,15 @@
             <div class="text-center">
                 <p>Not a member? <router-link to="/register">Register</router-link></p>
             </div>
-        </v-form>
-    </v-sheet>
+        </l-form>
+    </div>
 </template>
 <script setup>
     import ApiConst   from '@/constants/ApiContants';
     import Helper     from '@/common/Helper';
     import Validate   from '@/common/Validate';
     import {reactive, ref} from 'vue';
+    import LButton from "@/components/uis/LButton.vue";
     
     const api       = Helper.useApi();
     const cookies   = Helper.useCookies();
@@ -75,7 +63,9 @@
 
     const loginApp = async function(){
         data.showAlert = false;
-        if(form.value.validate()){
+        const validate = form.value.validate(true);
+        console.log(validate)
+        if(!validate){
             api.callApi({method: "post", url: ApiConst.LOGIN, param:data.login }).then((response) => {
                 data.showAlert  = true;
                 data.apiMessage = response.message;

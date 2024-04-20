@@ -7,12 +7,11 @@
             {{ label }}
         </l-label>
         <textarea
-            :id="id"
             ref="refInput"
             class="form-control l-textarea"
+            :id="id"
             :class="$props.class"
             :disabled="$props.disabled"
-            :type="$props.type"
             :value="modelValue"
             :placeholder="placeholder"
             @input="$emit('update:modelValue', $event.target.value)"

@@ -4,9 +4,10 @@
         :class="[variant ? 'radio-' + variant : '']"
     >
         <input
-            :id="id"
-            class="input_radio l-radio"
+            ref="refInput"
+            class="l-radio"
             type="radio"
+            :id="id"
             :class="$props.class"
             :disabled="$props.disabled"
             :name="name"
@@ -33,12 +34,11 @@ import transfer   from './common/transferData';
 export default{
     props:{ ...inputProps , ...{ checked: { type: Boolean , default: false}, name: {type: String }, value: {type: String} } },
     setup(props, {emit}) {
+        const refInput = ref('')
         const errors = ref('');
         const events = {}
-       
-        transfer.setupEvents(events, emit, );
-
-        return {errors, events}
+        transfer.setupEvents(events, emit);
+        return {errors, events, refInput}
     }
 }
 
